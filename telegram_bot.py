@@ -9,11 +9,8 @@ from telegram.ext import (Updater, CommandHandler, MessageHandler,
 
 load_dotenv()
 
-
 questions_answers = get_dict_questions_answers()
-
 reply_keyboard = [['Новый вопрос', 'Сдаться'], ['Мой счет']]
-
 markup = telegram.ReplyKeyboardMarkup(reply_keyboard)
 
 NEW_QUESTION, SOLUTION_ATTEMPT = range(2)
@@ -66,6 +63,7 @@ def error(bot, update, error):
 
 
 def main():
+    logger.info('(quiz-bot) Телеграм Бот запущен')
     updater = Updater(token=os.getenv('TELEGRAM_BOT'), request_kwargs={
         'proxy_url': 'http://136.243.47.220:3128/'
     })
