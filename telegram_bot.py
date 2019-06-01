@@ -1,17 +1,14 @@
 import os
 import redis
-import logging
 import telegram
 from dotenv import load_dotenv
+from logger_bot import logger
 from read_quiz import get_dict_questions_answers, get_random_question
 from telegram.ext import (Updater, CommandHandler, MessageHandler,
                           Filters, ConversationHandler, RegexHandler)
 
 load_dotenv()
 
-logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
-
-logger = logging.getLogger(__name__)
 
 questions_answers = get_dict_questions_answers()
 
@@ -69,7 +66,6 @@ def error(bot, update, error):
 
 
 def main():
-    logger.info('(quiz-bot) Телеграм Бот запущен')
     updater = Updater(token=os.getenv('TELEGRAM_BOT'), request_kwargs={
         'proxy_url': 'http://136.243.47.220:3128/'
     })
