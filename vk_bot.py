@@ -1,11 +1,13 @@
 import os
 import redis
 import vk_api
+from dotenv import load_dotenv
+from logger_bot import logger
 from read_quiz import get_dict_questions_answers, get_random_question
 from vk_api.keyboard import VkKeyboard, VkKeyboardColor
 from vk_api.longpoll import VkLongPoll, VkEventType
 from vk_api.utils import get_random_id
-from dotenv import load_dotenv
+
 
 load_dotenv()
 
@@ -56,7 +58,7 @@ def handle_give_up(event, api):
     )
 
 
-def main():
+def start_bot():
     vk_session = vk_api.VkApi(token=os.getenv('VK_BOT'))
     vk = vk_session.get_api()
 
@@ -73,9 +75,17 @@ def main():
                 handle_new_question_request(event, vk)
             elif event.text == 'Сдаться':
                 handle_give_up(event, vk)
-
             else:
                 handle_solution_attempt(event, vk)
+
+
+def main():
+    while True:
+        try:
+            logger.info('(quiz-bot) ВК Бот запущен')
+            start_bot()
+        except vk_api.VkApiError:
+            logger.exception('(quiz-bot) ВК Бот упал')
 
 
 if __name__ == "__main__":
