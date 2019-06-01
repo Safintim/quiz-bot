@@ -83,12 +83,12 @@ def echo(bot, update):
 
 
 def error(bot, update, error):
-    logger.exception(f'(smart-bots) Телеграм Бот упал\nUpdate {update} caused error')
+    logger.exception(f'(quiz-bot) Телеграм Бот упал\nUpdate {update} caused error')
 
 
 def main():
     load_dotenv()
-    logger.info('(smart-bots) Телеграм Бот запущен')
+    logger.info('(quiz-bot) Телеграм Бот запущен')
     updater = Updater(token=os.getenv('TELEGRAM_BOT'), request_kwargs={
         'proxy_url': 'http://151.106.8.237:8080/'
     })
