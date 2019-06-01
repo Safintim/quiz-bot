@@ -87,19 +87,22 @@ def main():
         entry_points=[CommandHandler('start', start)],
 
         states={
-            NEW_QUESTION: [],
+            NEW_QUESTION: [MessageHandler(Filters.text,
+                                          handle_new_question_request)],
 
-            SOLUTION_ATTEMPT: [],
+            SOLUTION_ATTEMPT: [MessageHandler(Filters.text,
+                                              handle_solution_attempt)],
 
-            GIVE_UP: []
+            GIVE_UP: [MessageHandler(Filters.text, handle_give_up)]
         },
 
-        fallbacks=[]
+        fallbacks=[CommandHandler('cancel',
+                                  handle_cancel,
+                                  pass_user_data=True)]
     )
 
     dp.add_handler(conversation_handler)
-    # dp.add_handler(CommandHandler("start", start))
-    # dp.add_handler(MessageHandler(Filters.text, echo))
+
     dp.add_error_handler(error)
     updater.start_polling()
 
