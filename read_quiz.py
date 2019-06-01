@@ -26,7 +26,6 @@ def form_dict_questions_answers(text):
             question = new_paragraph
         elif paragraph.startswith('Ответ'):
             answer = form_answer(new_paragraph)
-            print(new_paragraph, answer, sep=' '*3)
         if question and answer:
             question_answer[question] = answer
 

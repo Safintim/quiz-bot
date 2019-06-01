@@ -55,9 +55,7 @@ def error(bot, update, error):
 
 def main():
     logger.info('(quiz-bot) Телеграм Бот запущен')
-    updater = Updater(token=os.getenv('TELEGRAM_BOT'), request_kwargs={
-        'proxy_url': 'http://136.243.47.220:3128/'
-    })
+    updater = Updater(token=os.getenv('TELEGRAM_BOT'))
 
     dp = updater.dispatcher
 

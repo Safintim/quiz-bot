@@ -13,8 +13,6 @@ questions_answers = get_dict_questions_answers()
 
 def handle_new_question_request(event, api):
     question = get_random_question(questions_answers)
-    print(question)
-    print(questions_answers[question])
     db.set(event.user_id, question)
     api.messages.send(
         user_id=event.user_id,
