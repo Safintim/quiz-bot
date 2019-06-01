@@ -43,9 +43,8 @@ def handle_new_question_request(bot, update):
 def handle_solution_attempt(bot, update):
     question = db.get(update.message.chat_id)
 
-    if update.message.text == questions_answers[question]:
-        update.message.reply_text("Правильно! Поздравляю!"
-                                  " Для следующего вопроса нажми «Новый вопрос»")
+    if update.message.text.lower() == questions_answers[question]:
+        update.message.reply_text("Правильно! Поздравляю! Для следующего вопроса нажми «Новый вопрос»")
         return NEW_QUESTION
     else:
         update.message.reply_text("Неправильно... Попробуешь ещё раз?")
