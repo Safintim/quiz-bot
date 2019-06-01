@@ -1,23 +1,14 @@
 import os
-import redis
 import vk_api
-from dotenv import load_dotenv
 from logger_bot import logger
+from redis_db import db
 from read_quiz import get_dict_questions_answers, get_random_question
 from vk_api.keyboard import VkKeyboard, VkKeyboardColor
 from vk_api.longpoll import VkLongPoll, VkEventType
 from vk_api.utils import get_random_id
 
 
-load_dotenv()
-
 questions_answers = get_dict_questions_answers()
-
-db = redis.Redis(
-    host=os.getenv('REDIS_HOST'),
-    port=os.getenv('REDIS_PORT'),
-    password=os.getenv('REDIS_PASSWORD'),
-    decode_responses=True, charset='utf-8')
 
 
 def handle_new_question_request(event, api):

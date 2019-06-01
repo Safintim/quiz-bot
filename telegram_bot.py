@@ -1,25 +1,16 @@
 import os
-import redis
 import telegram
-from dotenv import load_dotenv
+from redis_db import db
 from logger_bot import logger
 from read_quiz import get_dict_questions_answers, get_random_question
 from telegram.ext import (Updater, CommandHandler, MessageHandler,
                           Filters, ConversationHandler, RegexHandler)
 
-load_dotenv()
 
 questions_answers = get_dict_questions_answers()
-reply_keyboard = [['Новый вопрос', 'Сдаться'], ['Мой счет']]
-markup = telegram.ReplyKeyboardMarkup(reply_keyboard)
+markup = telegram.ReplyKeyboardMarkup([['Новый вопрос', 'Сдаться'], ['Мой счет']])
 
 NEW_QUESTION, SOLUTION_ATTEMPT = range(2)
-
-db = redis.Redis(
-    host=os.getenv('REDIS_HOST'),
-    port=os.getenv('REDIS_PORT'),
-    password=os.getenv('REDIS_PASSWORD'),
-    decode_responses=True, charset='utf-8')
 
 
 def start(bot, update):
