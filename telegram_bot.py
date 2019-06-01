@@ -64,6 +64,12 @@ def handle_give_up(bot, update):
     return NEW_QUESTION
 
 
+def handle_cancel(bot, update):
+    user = update.message.from_user
+    update.message.reply_text(f'Пока {user.first_name}')
+    return ConversationHandler.END
+
+
 def error(bot, update, error):
     logger.exception(f'(quiz-bot) Телеграм Бот упал\nUpdate {update} caused error')
 
@@ -83,7 +89,9 @@ def main():
         states={
             NEW_QUESTION: [],
 
-            SOLUTION_ATTEMPT: []
+            SOLUTION_ATTEMPT: [],
+
+            GIVE_UP: []
         },
 
         fallbacks=[]
