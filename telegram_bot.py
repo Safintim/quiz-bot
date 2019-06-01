@@ -3,9 +3,9 @@ import redis
 import logging
 import telegram
 from dotenv import load_dotenv
-from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters,
-                          ConversationHandler)
 from read_quiz import get_dict_questions_answers, get_random_question
+from telegram.ext import (Updater, CommandHandler, MessageHandler,
+                          Filters, ConversationHandler)
 
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -28,7 +28,7 @@ reply_keyboard = [
 
 markup = telegram.ReplyKeyboardMarkup(reply_keyboard)
 
-NEW_QUESTION, SOLUTION_ATTEMPT = range(2)
+NEW_QUESTION, SOLUTION_ATTEMPT, GIVE_UP = range(2)
 
 
 def start(bot, update):
@@ -54,32 +54,14 @@ def handle_solution_attempt(bot, update):
     else:
         update.message.reply_text("Неправильно... Попробуешь ещё раз?")
 
-    return
+    return GIVE_UP
 
 
-def echo(bot, update):
-    question_answer = get_random_question(questions_answers)
-    question = question_answer[0]
-    answer = question_answer[1]
+def handle_give_up(bot, update):
+    question = r.get(update.message.chat_id)
+    update.message.reply_text(f'Правильный ответ: {questions_answers[question]}')
 
-    if update.message.text == 'Новый вопрос':
-        print(question)
-        print(answer)
-        update.message.reply_text(question)
-        r.set(update.message.chat_id, question)
-    elif update.message.text == 'Сдаться':
-        ...
-        # print(answer)
-        # update.message.reply_text(answer)
-        # print(r.get(update.message.chat_id))
-        # update.message.reply_text()
-    else:
-        current_question = r.get(update.message.chat_id)
-        if update.message.text == questions_answers[current_question]:
-            update.message.reply_text("Правильно! Поздравляю!"
-                                      " Для следующего вопроса нажми «Новый вопрос»")
-        else:
-            update.message.reply_text("Неправильно... Попробуешь ещё раз?")
+    return NEW_QUESTION
 
 
 def error(bot, update, error):
@@ -90,7 +72,7 @@ def main():
     load_dotenv()
     logger.info('(quiz-bot) Телеграм Бот запущен')
     updater = Updater(token=os.getenv('TELEGRAM_BOT'), request_kwargs={
-        'proxy_url': 'http://151.106.8.237:8080/'
+        'proxy_url': 'http://51.38.80.159:80/'
     })
 
     dp = updater.dispatcher
@@ -98,14 +80,18 @@ def main():
     conversation_handler = ConversationHandler(
         entry_points=[CommandHandler('start', start)],
 
-        states={},
+        states={
+            NEW_QUESTION: [],
+
+            SOLUTION_ATTEMPT: []
+        },
 
         fallbacks=[]
     )
 
     dp.add_handler(conversation_handler)
-    dp.add_handler(CommandHandler("start", start))
-    dp.add_handler(MessageHandler(Filters.text, echo))
+    # dp.add_handler(CommandHandler("start", start))
+    # dp.add_handler(MessageHandler(Filters.text, echo))
     dp.add_error_handler(error)
     updater.start_polling()
 
