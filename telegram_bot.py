@@ -1,6 +1,6 @@
 import os
 import telegram
-from redis_db import db
+from db import db
 from logger_bot import logger
 from read_quiz import get_dict_questions_answers, get_random_question
 from telegram.ext import (Updater, CommandHandler, MessageHandler,

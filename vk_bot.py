@@ -1,7 +1,7 @@
 import os
 import vk_api
 from logger_bot import logger
-from redis_db import db
+from db import db
 from read_quiz import get_dict_questions_answers, get_random_question
 from vk_api.keyboard import VkKeyboard, VkKeyboardColor
 from vk_api.longpoll import VkLongPoll, VkEventType
