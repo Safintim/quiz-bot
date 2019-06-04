@@ -8,7 +8,10 @@ def remove_text_with_brackets(text):
         open_bracket = text.find(br)
         while open_bracket >= 0:
             close_bracket = text.find(brackets[br])
-            text = text[:open_bracket] + text[close_bracket+1:]
+            if close_bracket >= 0:
+                text = text[:open_bracket] + text[close_bracket+1:]
+            else:
+                text = text[:open_bracket]
             open_bracket = text.find(br)
 
     return text
@@ -22,9 +25,11 @@ def remove_dots_one_after_another(text):
 
 
 def remove_dot_in_end_text(text):
-    if text[len(text)-1] == '.':
-        return text[:-1]
-    return text
+    if len(text) > 0:
+        if text[len(text)-1] == '.':
+            text = text[:-1]
+        return text
+    return ''
 
 
 def remove_quotes(text):
