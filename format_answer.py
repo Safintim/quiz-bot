@@ -25,12 +25,7 @@ def remove_dots_one_after_another(text):
 
 
 def remove_quotes(text):
-    quotes = ['\'', '"']
-
-    for symbol in text:
-        if symbol in quotes:
-            text = text.replace(symbol, '')
-    return text
+    return text.replace('\'', '').replace('"', '')
 
 
 def form_answer(answer):
