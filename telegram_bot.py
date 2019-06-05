@@ -7,7 +7,7 @@ from telegram.ext import (Updater, CommandHandler, MessageHandler,
                           Filters, ConversationHandler, RegexHandler)
 
 
-questions_answers = get_dict_questions_answers()
+answers_for_questions = get_dict_questions_answers()
 markup = telegram.ReplyKeyboardMarkup([['Новый вопрос', 'Сдаться'], ['Мой счет']])
 
 NEW_QUESTION, SOLUTION_ATTEMPT = range(2)
@@ -19,7 +19,7 @@ def start(bot, update):
 
 
 def handle_new_question_request(bot, update):
-    question = get_random_question(questions_answers)
+    question = get_random_question(answers_for_questions)
     db.set(update.message.chat_id, question)
     update.message.reply_text(question)
     return SOLUTION_ATTEMPT
@@ -28,7 +28,7 @@ def handle_new_question_request(bot, update):
 def handle_solution_attempt(bot, update):
     question = db.get(update.message.chat_id)
 
-    if update.message.text.lower() == questions_answers[question]:
+    if update.message.text.lower() == answers_for_questions[question]:
         update.message.reply_text("Правильно! Поздравляю! Для следующего вопроса нажми «Новый вопрос»")
         return NEW_QUESTION
     else:
@@ -38,7 +38,7 @@ def handle_solution_attempt(bot, update):
 
 def handle_give_up(bot, update):
     question = db.get(update.message.chat_id)
-    update.message.reply_text(f'Правильный ответ: {questions_answers[question]}\n'
+    update.message.reply_text(f'Правильный ответ: {answers_for_questions[question]}\n'
                               f'Для следующего вопроса нажми "Новый вопрос"')
     return NEW_QUESTION
 
