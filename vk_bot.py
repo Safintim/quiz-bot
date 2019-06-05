@@ -8,11 +8,11 @@ from vk_api.longpoll import VkLongPoll, VkEventType
 from vk_api.utils import get_random_id
 
 
-questions_answers = get_dict_questions_answers()
+answers_for_questions = get_dict_questions_answers()
 
 
 def handle_new_question_request(event, api):
-    question = get_random_question(questions_answers)
+    question = get_random_question(answers_for_questions)
     db.set(event.user_id, question)
     api.messages.send(
         user_id=event.user_id,
@@ -24,7 +24,7 @@ def handle_new_question_request(event, api):
 def handle_solution_attempt(event, api):
     question = db.get(event.user_id)
 
-    if event.text.lower() == questions_answers[question]:
+    if event.text.lower() == answers_for_questions[question]:
         api.messages.send(
             user_id=event.user_id,
             random_id=get_random_id(),
@@ -43,7 +43,8 @@ def handle_give_up(event, api):
     api.messages.send(
         user_id=event.user_id,
         random_id=get_random_id(),
-        message=f'Правильный ответ: {questions_answers[question]}\nДля следующего вопроса нажми "Новый вопрос"'
+        message=f'Правильный ответ: {answers_for_questions[question]}\n'
+                f'Для следующего вопроса нажми "Новый вопрос"'
     )
 
 
