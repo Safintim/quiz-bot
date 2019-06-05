@@ -43,10 +43,10 @@ pip3 install -r requirements.txt
 токен чат-логгер-бота, номер чата, хост, порт, пароль базы данных. Создайте файл .env вида:
 
 ```.env
-TELEGRAM_BOT=your_token
-VK_BOT=your_token
-LOGGER_BOT=your_token
-CHAT_ID=your_chat_id
+TELEGRAM_BOT_TOKEN=your_token
+VK_BOT_TOKEN=your_token
+LOGGER_BOT_TOKEN=your_token
+LOGS_RECEIVER_ID=your_chat_id
 REDIS_HOST=your_redis_host
 REDIS_PASSWORD=your_redis_password
 REDIS_PORT=your_redis_port

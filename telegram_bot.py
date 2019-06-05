@@ -55,7 +55,7 @@ def error(bot, update, error):
 
 def main():
     logger.info('(quiz-bot) Телеграм Бот запущен')
-    updater = Updater(token=os.getenv('TELEGRAM_BOT'))
+    updater = Updater(token=os.getenv('TELEGRAM_BOT_TOKEN'))
 
     dp = updater.dispatcher
 

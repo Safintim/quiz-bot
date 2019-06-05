@@ -48,7 +48,7 @@ def handle_give_up(event, api):
 
 
 def start_bot():
-    vk_session = vk_api.VkApi(token=os.getenv('VK_BOT'))
+    vk_session = vk_api.VkApi(token=os.getenv('VK_BOT_TOKEN'))
     vk = vk_session.get_api()
 
     keyboard = VkKeyboard()

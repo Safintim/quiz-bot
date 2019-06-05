@@ -14,8 +14,8 @@ def send_report(bot, chat_id, msg):
 
 
 send_report = partial(send_report,
-                      create_bot_logger(os.getenv('LOGGER_BOT')),
-                      os.getenv('CHAT_ID'))
+                      create_bot_logger(os.getenv('LOGGER_BOT_TOKEN')),
+                      os.getenv('LOGS_RECEIVER_ID'))
 
 
 def create_logger(logs_handler):
