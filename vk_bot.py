@@ -1,8 +1,9 @@
 import os
+import random
 import vk_api
 from logger_bot import logger
 from db import db
-from read_quiz import get_dict_questions_answers, get_random_question
+from read_quiz import get_dict_questions_answers
 from vk_api.keyboard import VkKeyboard, VkKeyboardColor
 from vk_api.longpoll import VkLongPoll, VkEventType
 from vk_api.utils import get_random_id
@@ -12,7 +13,7 @@ answers_for_questions = get_dict_questions_answers()
 
 
 def handle_new_question_request(event, api):
-    question = get_random_question(answers_for_questions)
+    question = random.choice(list(answers_for_questions.keys()))
     db.set(event.user_id, question)
     api.messages.send(
         user_id=event.user_id,

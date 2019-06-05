@@ -1,8 +1,9 @@
 import os
+import random
 import telegram
 from db import db
 from logger_bot import logger
-from read_quiz import get_dict_questions_answers, get_random_question
+from read_quiz import get_dict_questions_answers
 from telegram.ext import (Updater, CommandHandler, MessageHandler,
                           Filters, ConversationHandler, RegexHandler)
 
@@ -19,7 +20,7 @@ def start(bot, update):
 
 
 def handle_new_question_request(bot, update):
-    question = get_random_question(answers_for_questions)
+    question = random.choice(list(answers_for_questions.keys()))
     db.set(update.message.chat_id, question)
     update.message.reply_text(question)
     return SOLUTION_ATTEMPT

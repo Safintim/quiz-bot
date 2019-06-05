@@ -29,10 +29,6 @@ def form_dict_questions_answers(file):
     return question_answer
 
 
-def get_random_question(dict_question_answer):
-    return random.choice(list(dict_question_answer.keys()))
-
-
 def get_dict_questions_answers():
     file = get_random_file()
     dict_question_answer = form_dict_questions_answers(file)
