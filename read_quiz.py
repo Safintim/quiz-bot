@@ -9,12 +9,9 @@ def get_random_file(directory='quiz-questions'):
     return os.path.join(directory, file)
 
 
-def read_file(file):
+def form_dict_questions_answers(file):
     with open(file, 'r', encoding='KOI8-R') as f:
-        return f.read()
-
-
-def form_dict_questions_answers(text):
+        text = f.read()
     paragraphs = text.split('\n\n')
     question_answer = {}
     question = None
@@ -38,8 +35,7 @@ def get_random_question(dict_question_answer):
 
 def get_dict_questions_answers():
     file = get_random_file()
-    text = read_file(file)
-    dict_question_answer = form_dict_questions_answers(text)
+    dict_question_answer = form_dict_questions_answers(file)
     return dict_question_answer
 
 
