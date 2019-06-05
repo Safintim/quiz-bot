@@ -24,14 +24,6 @@ def remove_dots_one_after_another(text):
     return text
 
 
-def remove_dot_in_end_text(text):
-    if len(text) > 0:
-        if text[len(text)-1] == '.':
-            text = text[:-1]
-        return text
-    return ''
-
-
 def remove_quotes(text):
     quotes = ['\'', '"']
 
@@ -45,5 +37,4 @@ def form_answer(answer):
     answer = remove_text_with_brackets(answer)
     answer = remove_quotes(answer)
     answer = remove_dots_one_after_another(answer)
-    answer = remove_dot_in_end_text(answer)
-    return answer.lower().strip()
+    return answer.lower().strip('. ')
