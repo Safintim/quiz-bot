@@ -18,10 +18,7 @@ def remove_text_with_brackets(text):
 
 
 def remove_dots_one_after_another(text):
-    pattern = '...'
-    while pattern in text:
-        text = text.replace(pattern, '')
-    return text
+    return text.replace('...', '')
 
 
 def remove_quotes(text):
