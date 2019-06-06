@@ -1,13 +1,21 @@
 import os
 import redis
 import random
+import logging
 import telegram
-from logger_bot import logger
+from log_conf import LogsHandler
 from dotenv import load_dotenv
 from read_quiz import get_dict_questions_answers
 from telegram.ext import (Updater, CommandHandler, MessageHandler,
                           Filters, ConversationHandler, RegexHandler)
 
+
+logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+                    level=logging.INFO,
+                    handlers=[LogsHandler()])
+
+
+logger = logging.getLogger(__name__)
 
 answers_for_questions = get_dict_questions_answers()
 markup = telegram.ReplyKeyboardMarkup([['Новый вопрос', 'Сдаться'], ['Мой счет']])
