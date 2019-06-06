@@ -33,7 +33,7 @@ def get_dict_questions_answers(number_of_files=3):
     dict_question_answer = {}
     for i in range(number_of_files):
         file = get_random_file()
-        dict_question_answer = form_dict_questions_answers(file)
+        dict_question_answer.update(form_dict_questions_answers(file))
     return dict_question_answer
 
 
