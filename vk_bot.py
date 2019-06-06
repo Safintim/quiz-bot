@@ -68,7 +68,6 @@ def start_bot():
         password=os.getenv('REDIS_PASSWORD'),
         decode_responses=True, charset='utf-8')
 
-
     vk_session = vk_api.VkApi(token=os.getenv('VK_BOT_TOKEN'))
     vk = vk_session.get_api()
 
