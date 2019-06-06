@@ -1,18 +1,9 @@
-def remove_text_with_brackets(text):
-    brackets = {
-        '(': ')',
-        '[': ']'
-    }
+import re
 
-    for br in brackets:
-        open_bracket = text.find(br)
-        while open_bracket >= 0:
-            close_bracket = text.find(brackets[br])
-            if close_bracket >= 0:
-                text = text[:open_bracket] + text[close_bracket+1:]
-            else:
-                text = text[:open_bracket]
-            open_bracket = text.find(br)
+
+def remove_text_with_brackets(text):
+    text = re.sub(r'\(.*?\)', '', text)
+    text = re.sub(r'\[.*?\]', '', text)
 
     return text
 
