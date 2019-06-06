@@ -1,8 +1,9 @@
 import os
+import redis
 import random
 import telegram
-from db import db
 from logger_bot import logger
+from dotenv import load_dotenv
 from read_quiz import get_dict_questions_answers
 from telegram.ext import (Updater, CommandHandler, MessageHandler,
                           Filters, ConversationHandler, RegexHandler)
@@ -56,6 +57,15 @@ def error(bot, update, error):
 
 def main():
     logger.info('(quiz-bot) Телеграм Бот запущен')
+
+    load_dotenv()
+    global db
+    db = redis.Redis(
+        host=os.getenv('REDIS_HOST'),
+        port=os.getenv('REDIS_PORT'),
+        password=os.getenv('REDIS_PASSWORD'),
+        decode_responses=True, charset='utf-8')
+
     updater = Updater(token=os.getenv('TELEGRAM_BOT_TOKEN'))
 
     dp = updater.dispatcher

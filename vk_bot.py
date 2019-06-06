@@ -1,8 +1,9 @@
 import os
+import redis
 import random
 import vk_api
 from logger_bot import logger
-from db import db
+from dotenv import load_dotenv
 from read_quiz import get_dict_questions_answers
 from vk_api.keyboard import VkKeyboard, VkKeyboardColor
 from vk_api.longpoll import VkLongPoll, VkEventType
@@ -50,6 +51,16 @@ def handle_give_up(event, api):
 
 
 def start_bot():
+
+    load_dotenv()
+    global db
+    db = redis.Redis(
+        host=os.getenv('REDIS_HOST'),
+        port=os.getenv('REDIS_PORT'),
+        password=os.getenv('REDIS_PASSWORD'),
+        decode_responses=True, charset='utf-8')
+
+
     vk_session = vk_api.VkApi(token=os.getenv('VK_BOT_TOKEN'))
     vk = vk_session.get_api()
 
