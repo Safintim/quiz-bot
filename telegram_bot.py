@@ -77,7 +77,7 @@ def handle_cancel(bot, update):
 
 
 def error(bot, update, error):
-    logger.exception(f'(quiz-bot) Телеграм Бот упал\nUpdate {update} caused error')
+    logger.exception(f'(quiz-bot) Телеграм Бот упал\nUpdate {update} caused error\n {error}')
 
 
 def main():
