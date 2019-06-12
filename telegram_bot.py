@@ -1,21 +1,18 @@
 import os
 import redis
-import random
 import logging
 import telegram
 from log_conf import LogsHandler
 from dotenv import load_dotenv
-from read_quiz import get_dict_questions_answers
 from telegram.ext import (Updater, CommandHandler, MessageHandler,
                           Filters, ConversationHandler, RegexHandler)
 
 
 logger = logging.getLogger(__name__)
 
-answers_for_questions = get_dict_questions_answers()
 markup = telegram.ReplyKeyboardMarkup([['Новый вопрос', 'Сдаться'], ['Мой счет']])
-
 NEW_QUESTION, SOLUTION_ATTEMPT = range(2)
+TAG = 'tg'
 
 
 def start(bot, update):
