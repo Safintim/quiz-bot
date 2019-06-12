@@ -26,17 +26,24 @@ def handle_new_question_request(event, api):
 
 
 def handle_solution_attempt(event, api):
-    question = db.get(event.user_id)
+    user = db_tools.get_user(db_redis, TAG, event.obj.peer_id)
+    question_key = user['last_asked_question']
+    question_and_answer = db_tools.get_question_and_answer(db_redis, question_key)
+    if event.obj.text.lower().strip() == question_and_answer['answer']:
+        user['successful_attempts'] += 1
+        db_tools.update_user_score(db_redis, TAG, event.obj.peer_id, user)
 
-    if event.text.lower() == answers_for_questions[question]:
         api.messages.send(
-            user_id=event.user_id,
+            peer_id=event.obj.peer_id,
             random_id=get_random_id(),
             message="Правильно! Поздравляю! Для следующего вопроса нажми «Новый вопрос»"
         )
     else:
+        user['failed_attempts'] += 1
+        db_tools.update_user_score(db_redis, TAG, event.obj.peer_id, user)
+
         api.messages.send(
-            user_id=event.user_id,
+            peer_id=event.obj.peer_id,
             random_id=get_random_id(),
             message="Неправильно... Попробуешь ещё раз?"
         )
