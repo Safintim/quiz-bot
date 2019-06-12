@@ -64,6 +64,12 @@ def handle_report_question(bot, update):
     return NEW_QUESTION
 
 
+def handle_my_score(bot, update):
+    user = db_tools.get_user(db_redis, 'tg', update.message.chat_id)
+    update.message.reply_text(f'Количество удачных попыток: {user["successful_attempts"]}\n'
+                              f'Количество неудачный попыток: {user["failed_attempts"]}')
+
+
 def handle_cancel(bot, update):
     user = update.message.from_user
     update.message.reply_text(f'Пока {user.first_name}')
