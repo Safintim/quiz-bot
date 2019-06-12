@@ -53,16 +53,16 @@ def update_user(db, tag, user_id, question, user):
             }))
 
 
-def update_user_question(tag, user_id, question):
-    user = get_user(tag, user_id)
+def update_user_question(db, tag, user_id, question):
+    user = get_user(db, tag, user_id)
     if user:
-        update_user(tag, user_id, question, user)
+        update_user(db, tag, user_id, question, user)
     else:
-        create_user(tag, user_id, question)
+        create_user(db, tag, user_id, question)
 
 
-def update_user_score(tag, user_id, user):
-    update_user(tag, user_id, user['last_asked_question'], user)
+def update_user_score(db, tag, user_id, user):
+    update_user(db, tag, user_id, user['last_asked_question'], user)
 
 
 def get_random_key_questions(db):

@@ -25,7 +25,7 @@ def handle_new_question_request(bot, update):
     question_key = db_tools.get_random_key_questions(db_redis)
     question_and_answer = db_tools.get_question_and_answer(db_redis, question_key)
 
-    db_tools.update_user_question(TAG, update.message.chat_id, question_key)
+    db_tools.update_user_question(db_redis, TAG, update.message.chat_id, question_key)
 
     update.message.reply_text(question_and_answer['question'])
     return SOLUTION_ATTEMPT
@@ -39,11 +39,11 @@ def handle_solution_attempt(bot, update):
     if update.message.text.lower().strip() == question_and_answer['answer']:
         update.message.reply_text("Правильно! Поздравляю! Для следующего вопроса нажми «Новый вопрос»")
         user['successful_attempts'] += 1
-        db_tools.update_user_score(TAG, update.message.chat_id, user)
+        db_tools.update_user_score(db_redis, TAG, update.message.chat_id, user)
         return NEW_QUESTION
     else:
         user['failed_attempts'] += 1
-        db_tools.update_user_score(TAG, update.message.chat_id, user)
+        db_tools.update_user_score(db_redis, TAG, update.message.chat_id, user)
         update.message.reply_text("Неправильно... Попробуешь ещё раз?")
         return SOLUTION_ATTEMPT
 
