@@ -71,6 +71,17 @@ def handle_report_question(event, api):
     )
 
 
+def handle_my_score(event, api):
+    user = db_tools.get_user(db_redis, TAG, event.obj.peer_id)
+
+    api.messages.send(
+        peer_id=event.obj.peer_id,
+        random_id=get_random_id(),
+        message=f'Количество удачных попыток: {user["successful_attempts"]}\n'
+                f'Количество неудачный попыток: {user["failed_attempts"]}'
+    )
+
+
 
 def start_bot():
 
