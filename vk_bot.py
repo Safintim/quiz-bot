@@ -50,12 +50,13 @@ def handle_solution_attempt(event, api):
 
 
 def handle_give_up(event, api):
-    question = db.get(event.user_id)
+    user = db_tools.get_user(db_redis, TAG, event.obj.peer_id)
+    question_key = user['last_asked_question']
+    question_and_answer = db_tools.get_question_and_answer(db_redis, question_key)
     api.messages.send(
-        user_id=event.user_id,
+        peer_id=event.obj.peer_id,
         random_id=get_random_id(),
-        message=f'Правильный ответ: {answers_for_questions[question]}\n'
-                f'Для следующего вопроса нажми "Новый вопрос"'
+        message=f'Правильный ответ: {question_and_answer["answer"]}\nДля следующего вопроса нажми "Новый вопрос"'
     )
 
 
