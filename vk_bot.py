@@ -1,19 +1,16 @@
 import os
 import redis
-import random
 import vk_api
 import logging
 from log_conf import LogsHandler
 from dotenv import load_dotenv
-from read_quiz import get_dict_questions_answers
 from vk_api.keyboard import VkKeyboard, VkKeyboardColor
-from vk_api.longpoll import VkLongPoll, VkEventType
+from vk_api.bot_longpoll import VkBotLongPoll, VkBotEventType
 from vk_api.utils import get_random_id
-
 
 logger = logging.getLogger(__name__)
 
-answers_for_questions = get_dict_questions_answers()
+TAG = 'vk'
 
 
 def handle_new_question_request(event, api):
