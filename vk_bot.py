@@ -2,6 +2,7 @@ import os
 import redis
 import vk_api
 import logging
+import db_tools
 from log_conf import LogsHandler
 from dotenv import load_dotenv
 from vk_api.keyboard import VkKeyboard, VkKeyboardColor
@@ -14,12 +15,13 @@ TAG = 'vk'
 
 
 def handle_new_question_request(event, api):
-    question = random.choice(list(answers_for_questions.keys()))
-    db.set(event.user_id, question)
+    question_key = db_tools.get_random_key_questions(db_redis)
+    question_and_answer = db_tools.get_question_and_answer(db_redis, question_key)
+    db_tools.update_user_question(db_redis, TAG, event.obj.peer_id, question_key)
     api.messages.send(
-        user_id=event.user_id,
+        peer_id=event.obj.peer_id,
         random_id=get_random_id(),
-        message=question
+        message=question_and_answer['question']
     )
 
 
@@ -53,8 +55,8 @@ def handle_give_up(event, api):
 def start_bot():
 
     load_dotenv()
-    global db
-    db = redis.Redis(
+    global db_redis
+    db_redis = redis.Redis(
         host=os.getenv('REDIS_HOST'),
         port=os.getenv('REDIS_PORT'),
         password=os.getenv('REDIS_PASSWORD'),
