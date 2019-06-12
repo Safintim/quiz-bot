@@ -60,6 +60,18 @@ def handle_give_up(event, api):
     )
 
 
+def handle_report_question(event, api):
+    user = db_tools.get_user(db_redis, TAG, event.obj.peer_id)
+    db_tools.create_report_question(db_redis, event.user_id, user['last_asked_question'])
+
+    api.messages.send(
+        peer_id=event.obj.peer_id,
+        random_id=get_random_id(),
+        message='Разберемся\nДля следующего вопроса нажми "Новый вопрос"'
+    )
+
+
+
 def start_bot():
 
     load_dotenv()
