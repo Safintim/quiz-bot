@@ -49,8 +49,10 @@ def handle_solution_attempt(bot, update):
 
 
 def handle_give_up(bot, update):
-    question = db.get(update.message.chat_id)
-    update.message.reply_text(f'Правильный ответ: {answers_for_questions[question]}\n'
+    user = db_tools.get_user(db_redis, TAG, update.message.chat_id)
+    question_key = user['last_asked_question']
+    question_and_answer = db_tools.get_question_and_answer(db_redis, question_key)
+    update.message.reply_text(f'Правильный ответ: {question_and_answer["answer"]}\n'
                               f'Для следующего вопроса нажми "Новый вопрос"')
     return NEW_QUESTION
 
