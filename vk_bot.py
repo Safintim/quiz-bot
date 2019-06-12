@@ -63,7 +63,7 @@ def handle_give_up(event, api):
 
 def handle_report_question(event, api):
     user = db_tools.get_user(db_redis, TAG, event.obj.peer_id)
-    db_tools.create_report_question(db_redis, event.user_id, user['last_asked_question'])
+    db_tools.create_report_question(db_redis, event.obj.peer_id, user['last_asked_question'])
 
     api.messages.send(
         peer_id=event.obj.peer_id,
@@ -96,6 +96,7 @@ def start_bot():
     vk_session = vk_api.VkApi(token=os.getenv('VK_BOT_TOKEN'))
     vk = vk_session.get_api()
 
+    global keyboard
     keyboard = VkKeyboard()
     keyboard.add_button('Новый вопрос', color=VkKeyboardColor.POSITIVE)
     keyboard.add_button('Сдаться', color=VkKeyboardColor.POSITIVE)
@@ -113,8 +114,15 @@ def start_bot():
                         handle_give_up(event, vk)
                     elif event.obj.text == 'Мой счет':
                         handle_my_score(event, vk)
-                    elif event.obj.text == 'Неверно составленный вопрос':
+                    elif event.obj.text == 'Пожаловаться на вопрос':
                         handle_report_question(event, vk)
+                    elif event.obj.text == 'Начать':
+                        vk.messages.send(
+                            peer_id=event.obj.peer_id,
+                            random_id=get_random_id(),
+                            keyboard=keyboard.get_keyboard(),
+                            message='Нажми новый вопрос'
+                        )
                     else:
                         handle_solution_attempt(event, vk)
         except requests.exceptions.ReadTimeout:
