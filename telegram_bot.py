@@ -10,11 +10,6 @@ from telegram.ext import (Updater, CommandHandler, MessageHandler,
                           Filters, ConversationHandler, RegexHandler)
 
 
-logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                    level=logging.INFO,
-                    handlers=[LogsHandler()])
-
-
 logger = logging.getLogger(__name__)
 
 answers_for_questions = get_dict_questions_answers()
@@ -64,9 +59,14 @@ def error(bot, update, error):
 
 
 def main():
+    logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+                    level=logging.INFO,
+                    handlers=[LogsHandler()])
+
     logger.info('(quiz-bot) Телеграм Бот запущен')
 
     load_dotenv()
+    
     global db
     db = redis.Redis(
         host=os.getenv('REDIS_HOST'),

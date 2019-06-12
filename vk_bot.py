@@ -11,11 +11,6 @@ from vk_api.longpoll import VkLongPoll, VkEventType
 from vk_api.utils import get_random_id
 
 
-logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                    level=logging.INFO,
-                    handlers=[LogsHandler()])
-
-
 logger = logging.getLogger(__name__)
 
 answers_for_questions = get_dict_questions_answers()
@@ -89,6 +84,10 @@ def start_bot():
 
 
 def main():
+    logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+                    level=logging.INFO,
+                    handlers=[LogsHandler()])
+
     while True:
         try:
             logger.info('(quiz-bot) ВК Бот запущен')
