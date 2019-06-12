@@ -2,6 +2,7 @@ import os
 import redis
 import vk_api
 import logging
+import requests
 import db_tools
 from log_conf import LogsHandler
 from dotenv import load_dotenv
@@ -82,7 +83,6 @@ def handle_my_score(event, api):
     )
 
 
-
 def start_bot():
 
     load_dotenv()
@@ -101,16 +101,24 @@ def start_bot():
     keyboard.add_button('Сдаться', color=VkKeyboardColor.POSITIVE)
     keyboard.add_line()
     keyboard.add_button('Мой счет', color=VkKeyboardColor.POSITIVE)
-
-    longpoll = VkLongPoll(vk_session)
-    for event in longpoll.listen():
-        if event.type == VkEventType.MESSAGE_NEW and event.to_me:
-            if event.text == 'Новый вопрос':
-                handle_new_question_request(event, vk)
-            elif event.text == 'Сдаться':
-                handle_give_up(event, vk)
-            else:
-                handle_solution_attempt(event, vk)
+    keyboard.add_button('Пожаловаться на вопрос', color=VkKeyboardColor.POSITIVE)
+    while True:
+        longpoll = VkBotLongPoll(vk_session, os.getenv('VK_GROUP_ID'))
+        try:
+            for event in longpoll.listen():
+                if event.type == VkBotEventType.MESSAGE_NEW:
+                    if event.obj.text == 'Новый вопрос':
+                        handle_new_question_request(event, vk)
+                    elif event.obj.text == 'Сдаться':
+                        handle_give_up(event, vk)
+                    elif event.obj.text == 'Мой счет':
+                        handle_my_score(event, vk)
+                    elif event.obj.text == 'Неверно составленный вопрос':
+                        handle_report_question(event, vk)
+                    else:
+                        handle_solution_attempt(event, vk)
+        except requests.exceptions.ReadTimeout:
+            continue
 
 
 def main():
