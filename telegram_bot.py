@@ -1,4 +1,5 @@
 import os
+import db_tools
 import redis
 import logging
 import telegram
@@ -10,7 +11,7 @@ from telegram.ext import (Updater, CommandHandler, MessageHandler,
 
 logger = logging.getLogger(__name__)
 
-markup = telegram.ReplyKeyboardMarkup([['Новый вопрос', 'Сдаться'], ['Мой счет']])
+markup = telegram.ReplyKeyboardMarkup([['Новый вопрос', 'Сдаться'], ['Мой счет', 'Пожаловаться на вопрос']])
 NEW_QUESTION, SOLUTION_ATTEMPT = range(2)
 TAG = 'tg'
 
@@ -21,9 +22,12 @@ def start(bot, update):
 
 
 def handle_new_question_request(bot, update):
-    question = random.choice(list(answers_for_questions.keys()))
-    db.set(update.message.chat_id, question)
-    update.message.reply_text(question)
+    question_key = db_tools.get_random_key_questions(db_redis)
+    question_and_answer = db_tools.get_question_and_answer(db_redis, question_key)
+
+    db_tools.update_user_question(TAG, update.message.chat_id, question_key)
+
+    update.message.reply_text(question_and_answer['question'])
     return SOLUTION_ATTEMPT
 
 
@@ -64,8 +68,8 @@ def main():
 
     load_dotenv()
     
-    global db
-    db = redis.Redis(
+    global db_redis
+    db_redis = redis.Redis(
         host=os.getenv('REDIS_HOST'),
         port=os.getenv('REDIS_PORT'),
         password=os.getenv('REDIS_PASSWORD'),
