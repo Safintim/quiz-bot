@@ -1,17 +1,9 @@
-import random
 import os
 import os.path
 from format_answer import form_answer
 
 
-def get_random_file(directory='quiz-questions'):
-    file = random.choice([file for file in os.listdir(directory) if file.endswith('.txt')])
-    return os.path.join(directory, file)
-
-
-def form_dict_questions_answers(file):
-    with open(file, 'r', encoding='KOI8-R') as f:
-        text = f.read()
+def form_dict_questions_answers(text):
     paragraphs = text.split('\n\n')
     question_answer = {}
     question = None
@@ -29,16 +21,16 @@ def form_dict_questions_answers(file):
     return question_answer
 
 
-def get_dict_questions_answers(number_of_files=3):
-    dict_question_answer = {}
-    for i in range(number_of_files):
-        file = get_random_file()
-        dict_question_answer.update(form_dict_questions_answers(file))
-    return dict_question_answer
+def get_dicts_questions_answers(directory='quiz-questions'):
+    for file in os.listdir(directory):
+        with open(file, 'r', encoding='KOI8-R') as f:
+            text = f.read()
+        temp = form_dict_questions_answers(text)
+        yield temp
 
 
 def main():
-    get_dict_questions_answers()
+    list(get_dicts_questions_answers())
 
 
 if __name__ == '__main__':
