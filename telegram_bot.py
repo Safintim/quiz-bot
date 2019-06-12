@@ -103,13 +103,15 @@ def main():
     conversation_handler = ConversationHandler(
         entry_points=[CommandHandler('start', start)],
         states={
-            NEW_QUESTION: [RegexHandler('^Новый вопрос$', handle_new_question_request)],
+            NEW_QUESTION: [RegexHandler('^Новый вопрос$', handle_new_question_request),
+                           RegexHandler('^Пожаловаться на вопрос$', handle_report_question)],
             SOLUTION_ATTEMPT: [RegexHandler('^Сдаться$', handle_give_up),
+                               RegexHandler('^Неверно составленный вопрос$', handle_report_question),
                                MessageHandler(Filters.text, handle_solution_attempt)],
         },
         fallbacks=[CommandHandler('cancel', handle_cancel)]
     )
-
+    dp.add_handler(RegexHandler('^Мой счет$', handle_my_score))
     dp.add_handler(conversation_handler)
     dp.add_error_handler(error)
     updater.start_polling()
