@@ -57,6 +57,13 @@ def handle_give_up(bot, update):
     return NEW_QUESTION
 
 
+def handle_report_question(bot, update):
+    user = db_tools.get_user(db_redis, TAG, update.message.chat_id)
+    db_tools.create_report_question(db_redis, update.message.chat_id, user['last_asked_question'])
+    update.message.reply_text('Разберемся\nДля следующего вопроса нажми "Новый вопрос"')
+    return NEW_QUESTION
+
+
 def handle_cancel(bot, update):
     user = update.message.from_user
     update.message.reply_text(f'Пока {user.first_name}')
