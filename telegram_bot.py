@@ -88,7 +88,7 @@ def main():
     logger.info('(quiz-bot) Телеграм Бот запущен')
 
     load_dotenv()
-    
+
     global db_redis
     db_redis = redis.Redis(
         host=os.getenv('REDIS_HOST'),

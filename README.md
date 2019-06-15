@@ -3,19 +3,15 @@
 ## Описание
 quiz-bot - это два бота (вконтакте и телеграмм), которые выполнены в стиле викторины.
 
-
-
 ## Пример работы
 ![Alt Text](http://ipic.su/img/img7/fs/quiz-telebot.1559418673.gif)
 ![Alt Text](http://ipic.su/img/img7/fs/quiz-vkbot.1559418740.gif)
-
 
 ## Требования
 
 Для запуска скрипта требуется:
 
 *Python 3.6*
-
 
 ## Как установить:
 
@@ -24,10 +20,12 @@ quiz-bot - это два бота (вконтакте и телеграмм), к
 (Windows):[python.org/downloads](https://www.python.org/downloads/windows/)
 
 (Debian):
+
 ```sh
 sudo apt-get install python3
 sudo apt-get install python3-pip
 ```
+
 2. Установить зависимости и скачать сам проект:
 
 ```sh
@@ -47,6 +45,7 @@ TELEGRAM_BOT_TOKEN=your_token
 VK_BOT_TOKEN=your_token
 LOGGER_BOT_TOKEN=your_token
 LOGS_RECEIVER_ID=your_chat_id
+VK_GROUP_ID=your_vk_group_id
 REDIS_HOST=your_redis_host
 REDIS_PASSWORD=your_redis_password
 REDIS_PORT=your_redis_port
@@ -54,10 +53,11 @@ REDIS_PORT=your_redis_port
 
 6. Требуется создать внутри проекта quiz-bot директорию "quiz-questions", в которой должны быть файлы с вопросами
 и ответами.
- 
+
 ```sh
 mkdir quiz-questions
 ```
+
 7. Создать текстовые файлы с вопросами внутри директории quiz-questions вида:
 
 ```markdown
@@ -77,18 +77,24 @@ mkdir quiz-questions
 ...текст_ответа...
 ```
 
-
 ## Как использовать:
 
-Запустить телеграм бота:
+Загрузить вопросы в бд:
+
 ```sh
-python3 telegram_bot.py
+python3 db_tools.py
 ```
 
 Запустить вк бота:
+
 ```sh
 python3 vk_bot.py
 ```
+
+Запустить телеграмм бота:
+```sh
+python3 telegram_bot.py
+
 
 ## Демо-боты
 Данные боты готовы к использованию. Пример их работы указан на гифках выше.
