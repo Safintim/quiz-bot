@@ -82,8 +82,8 @@ def error(bot, update, error):
 
 def main():
     logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                    level=logging.INFO,
-                    handlers=[LogsHandler()])
+                        level=logging.INFO,
+                        handlers=[LogsHandler()])
 
     logger.info('(quiz-bot) Телеграм Бот запущен')
 

@@ -4,8 +4,8 @@
 quiz-bot - это два бота (вконтакте и телеграмм), которые выполнены в стиле викторины.
 
 ## Пример работы
-![Alt Text](http://ipic.su/img/img7/fs/quiz-telebot.1559418673.gif)
-![Alt Text](http://ipic.su/img/img7/fs/quiz-vkbot.1559418740.gif)
+![Alt Text](http://ipic.su/img/img7/fs/quiz-telebot.1560949231.gif)
+![Alt Text](http://ipic.su/img/img7/fs/quiz-vkbot.1560949396.gif)
 
 ## Требования
 
